@@ -1,0 +1,32 @@
+name: .NET
+
+on:
+  push:
+   branches:
+   - release*.*.*
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Setup NuGet.exe for use with actions
+      uses: NuGet/setup-nuget@v1.0.5
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: 5.0.x
+    - name: Restore dependencies
+      run: dotnet restore
+    - name: Build
+      run: dotnet build --no-restore
+    - name: Test
+      run: dotnet test --no-build --verbosity normal
+    - name: Publish NuGet
+      uses: brandedoutcast/publish-nuget@v2.5.5'
+      with:
+        PROJECT_FILE_PATH: /AwaitableWaitHandle/AwaitableWaitHandle.csproj
+        NUGET_KEY: ${{ secrets.NUGET_API_KEY }}
+        VERSION_STATIC: ${GITHUB_REF##*/release}
