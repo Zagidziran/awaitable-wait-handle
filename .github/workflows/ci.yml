@@ -40,6 +40,6 @@ jobs:
       with:
         PROJECT_FILE_PATH: AwaitableWaitHandle/AwaitableWaitHandle.csproj
         NUGET_KEY: ${{ secrets.NUGET_API_KEY }}
-        VERSION_STATIC: ${{ steps.get_version.outputs.VERSION }}
+        VERSION_STATIC: 1.1.0
         TAG_COMMIT: false
         
