@@ -28,10 +28,10 @@ jobs:
       run: dotnet test --no-build --verbosity normal
     - name: Get the version
       id: get_version
-      run: echo ::set-output name=VERSION::${GITHUB_REF#refs/tags/v}   
+      run: echo ::set-output name=VERSION::1.1.0
     - name: Get the version2
       id: get_version2
-      run: echo ::debug::${GITHUB_REF#refs/tags/v} 
+      run: echo ::debug::${GITHUB_REF#refs/heads/} 
     - name: Get the version3
       id: get_version3
       run: echo ::debug::${{ steps.get_version.outputs.VERSION }} 
@@ -41,3 +41,5 @@ jobs:
         PROJECT_FILE_PATH: AwaitableWaitHandle/AwaitableWaitHandle.csproj
         NUGET_KEY: ${{ secrets.NUGET_API_KEY }}
         VERSION_STATIC: ${{ steps.get_version.outputs.VERSION }}
+        TAG_COMMIT: false
+        
