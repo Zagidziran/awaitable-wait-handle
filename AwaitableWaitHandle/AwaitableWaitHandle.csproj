@@ -2,8 +2,8 @@
 
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
-    <RootNamespace>Gray.Conncurent.AwaitableWaitHandle</RootNamespace>
-    <AssemblyName>Gray.ConncurentAwaitableWaitHandle</AssemblyName>
+    <RootNamespace>Zagidiziran.Concurrent.AwaitableWaitHandle</RootNamespace>
+    <AssemblyName>Zagidiziran.ConcurrentAwaitableWaitHandle</AssemblyName>
   </PropertyGroup>
 
 </Project>
