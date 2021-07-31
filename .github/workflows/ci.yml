@@ -27,6 +27,6 @@ jobs:
     - name: Publish NuGet
       uses: brandedoutcast/publish-nuget@v2.5.5
       with:
-        PROJECT_FILE_PATH: /AwaitableWaitHandle/AwaitableWaitHandle.csproj
+        PROJECT_FILE_PATH: AwaitableWaitHandle/AwaitableWaitHandle.csproj
         NUGET_KEY: ${{ secrets.NUGET_API_KEY }}
         VERSION_STATIC: ${GITHUB_REF##*/release}
