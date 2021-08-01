@@ -4,8 +4,6 @@ on:
   push:
    tags:
    - v*.*.*
-   branches:
-   - master
 
 jobs:
   build:
@@ -20,13 +18,15 @@ jobs:
       uses: actions/setup-dotnet@v1
       with:
         dotnet-version: 5.0.x
+    - name: Get the version
+      id: get_version
+      run: echo ::set-output name=VERSION::${GITHUB_REF#refs/tags/v}         
     - name: Restore dependencies
       run: dotnet restore
     - name: Build
-      run: dotnet build --no-restore --configuration Release
-    - name: Get the version
-      id: get_version
-      run: echo ::set-output name=VERSION::1.1.0
+      run: dotnet build --no-restore --configuration Release -p:Version=${{ steps.get_version.outputs.VERSION }}
+    - name: Test
+      run: dotnet test --no-build --verbosity normal --configuration Release 
     - name: Pack
       run: dotnet pack --no-build --configuration Release AwaitableWaitHandle/AwaitableWaitHandle.csproj --output . -p:PackageVersion=${{ steps.get_version.outputs.VERSION }}
     - name: PushNuget
