@@ -27,17 +27,7 @@ jobs:
     - name: Get the version
       id: get_version
       run: echo ::set-output name=VERSION::1.1.0
-    - name: Get the version2
-      id: get_version2
-      run: echo ::debug::${GITHUB_REF#refs/heads/} 
-    - name: Get the version3
-      id: get_version3
-      run: echo ::debug::${{ steps.get_version.outputs.VERSION }} 
-    - name: Publish NuGet
-      uses: brandedoutcast/publish-nuget@v2.5.5
-      with:
-        PROJECT_FILE_PATH: AwaitableWaitHandle/AwaitableWaitHandle.csproj
-        NUGET_KEY: ${{ secrets.NUGET_API_KEY }}
-        VERSION_STATIC: 1.1.0
-        TAG_COMMIT: false
-        
+    - name: Pack
+      run: dotnet pack --no-build --configuration Release AwaitableWaitHandle/AwaitableWaitHandle.csproj --output . -p:PackageVersion=${{ steps.get_version.outputs.VERSION }}
+    - name: PushNuget
+      run: dotnet nuget push *.nupkg --source https://api.nuget.org/v3/index.json --api-key ${{secrets.NUGET_API_KEY}} --skip-duplicate
