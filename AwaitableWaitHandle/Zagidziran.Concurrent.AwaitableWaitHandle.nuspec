@@ -5,6 +5,7 @@
     <version>$version$</version>
     <authors>Zagidziran</authors>
     <owners>Zagidziran</owners>
+	<license type="file">license.txt</license>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>Tiny set of calsses to await on waithandles.</description>
     <releaseNotes></releaseNotes>
@@ -16,6 +17,7 @@
     </dependencies>
   </metadata>
   <files>
+    <file src="..\license.txt" target="" />
     <file src="bin\$configuration$\net5.0\Zagidziran.Concurrent.AwaitableWaitHandle.dll" target="lib\net5.0\" />
     <file src="bin\$configuration$\net5.0\Zagidziran.Concurrent.AwaitableWaitHandle.pdb" target="lib\net5.0\" />
   </files>
