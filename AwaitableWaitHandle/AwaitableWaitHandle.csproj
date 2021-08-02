@@ -3,7 +3,7 @@
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
     <RootNamespace>Zagidiziran.Concurrent.AwaitableWaitHandle</RootNamespace>
-    <AssemblyName>Zagidiziran.ConcurrentAwaitableWaitHandle</AssemblyName>
+    <AssemblyName>Zagidiziran.Concurrent.AwaitableWaitHandle</AssemblyName>
   </PropertyGroup>
 
 </Project>
