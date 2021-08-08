@@ -1,8 +1,9 @@
-﻿namespace Zagidiziran.Concurrent.AwaitableWaitHandle
+﻿namespace Zagidziran.Concurrent.AwaitableWaitHandle
 {
     using System;
     using System.Collections.Concurrent;
     using System.Threading;
+    using Zagidziran.Concurrent.AwaitableWaitHandle;
 
     public class WaitHandleAwaiter : IWaitHandleNotifyCompletion
     {

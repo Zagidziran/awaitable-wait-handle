@@ -1,4 +1,4 @@
-﻿namespace Zagidiziran.Concurrent.AwaitableWaitHandle
+﻿namespace Zagidziran.Concurrent.AwaitableWaitHandle
 {
     using System.Runtime.CompilerServices;
     using System.Threading;

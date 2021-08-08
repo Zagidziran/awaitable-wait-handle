@@ -2,8 +2,13 @@
 
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
-    <RootNamespace>Zagidiziran.Concurrent.AwaitableWaitHandle</RootNamespace>
-    <AssemblyName>Zagidiziran.Concurrent.AwaitableWaitHandle</AssemblyName>
+    <RootNamespace>Zagidziran.Concurrent.AwaitableWaitHandle</RootNamespace>
+    <AssemblyName>Zagidziran.Concurrent.AwaitableWaitHandle</AssemblyName>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <NuspecFile>Zagidziran.Concurrent.AwaitableWaitHandle.nuspec</NuspecFile>
+    <NuspecProperties>version=$(PackageVersion);configuration=$(Configuration)</NuspecProperties>
   </PropertyGroup>
 
 </Project>
