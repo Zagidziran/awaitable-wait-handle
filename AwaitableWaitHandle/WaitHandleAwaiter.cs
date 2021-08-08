@@ -2,8 +2,8 @@
 {
     using System;
     using System.Collections.Concurrent;
+    using System.Runtime.ExceptionServices;
     using System.Threading;
-    using Zagidziran.Concurrent.AwaitableWaitHandle;
 
     public class WaitHandleAwaiter : IWaitHandleNotifyCompletion
     {
@@ -11,44 +11,51 @@
 
         private readonly ConcurrentBag<Action> completeHandlers = new ConcurrentBag<Action>();
 
-        private TimeSpan timeout;
+        private readonly CancellationToken cancellationToken;
+
+        private readonly TimeSpan timeout;
 
         private volatile bool isCompleted = false;
 
-        private volatile RegisteredWaitHandle registeredWaitHandle;
+        private volatile RegisteredWaitHandle? registeredWaitHandle;
+
+        private CancellationTokenRegistration? cancellationTokenRegistration;
 
         private volatile bool isTimedout = false;
 
         private int waitHandleCreatedFlag;
 
-        public WaitHandleAwaiter(WaitHandle waitHandle)
-            : this(waitHandle, TimeSpan.FromMilliseconds(-1))
-        { }
+        private ExceptionDispatchInfo? exception;
 
-
-        public WaitHandleAwaiter(WaitHandle waitHandle, TimeSpan timeout)
+        internal WaitHandleAwaiter(WaitHandle waitHandle, TimeSpan timeout, CancellationToken cancellationToken)
         {
             this.waitHandle =
                 waitHandle
                 ?? throw new ArgumentException("WaitHandle cannot be null.");
 
             this.timeout = timeout;
+            this.cancellationToken = cancellationToken;
         }
 
         public WaitHandle WaitHandle => this.waitHandle;
 
-        public bool IsCompleted => this.waitHandle.SafeWaitHandle.IsClosed;
+        public bool IsCompleted => this.isCompleted;
 
         public void GetResult()
         {
             if (!this.isCompleted)
             {
-                if (!this.waitHandle.WaitOne(timeout))
+                var res = WaitHandle.WaitAny(new [] { this.waitHandle, this.cancellationToken.WaitHandle }, timeout);
+                if (res == WaitHandle.WaitTimeout)
                 {
                     throw new TimeoutException();
                 }
             }
-            else if (this.isTimedout)
+
+            this.exception?.Throw();
+            this.cancellationToken.ThrowIfCancellationRequested();
+
+            if (this.isTimedout)
             {
                 throw new TimeoutException();
             }
@@ -63,28 +70,51 @@
 
             if (Interlocked.CompareExchange(ref this.waitHandleCreatedFlag, 0, 17) == 0)
             {
-                this.registeredWaitHandle = ThreadPool.RegisterWaitForSingleObject(
-                    this.waitHandle,
-                    OnWaitCompleted,
-                    this,
-                    this.timeout,
-                    true);
+                try
+                {
+                    this.registeredWaitHandle = ThreadPool.RegisterWaitForSingleObject(
+                        this.waitHandle,
+                        OnWaitCompleted,
+                        this,
+                        this.timeout,
+                        true);
+                }
+                catch (ObjectDisposedException ex)
+                {
+                    this.exception = ExceptionDispatchInfo.Capture(ex);
+                    this.isCompleted = true;
+                }
+
+                if (this.cancellationToken != CancellationToken.None)
+                {
+                    if (!cancellationToken.IsCancellationRequested)
+                    {
+                        this.cancellationTokenRegistration = this.cancellationToken.Register(() => this.OnWaitCompleted(this, false));
+                    }
+                }
             }
 
             completeHandlers.Add(continuation);
 
-            if (this.IsCompleted)
+            if (cancellationToken.IsCancellationRequested || this.waitHandle.SafeWaitHandle.IsClosed)
             {
-                this.ProcessHandlers();
+                this.OnWaitCompleted(this, false);
             }
         }
 
         private void OnWaitCompleted(object state, bool timedout)
         {
             this.isTimedout = timedout;
-            this.isCompleted = true;
-            registeredWaitHandle.Unregister(this.waitHandle);
+            this.CompleteState();
             this.ProcessHandlers();
+        }
+
+        private void CompleteState()
+        {
+            this.isCompleted = true;
+            Interlocked.CompareExchange(ref this.registeredWaitHandle, null, this.registeredWaitHandle)
+                ?.Unregister(this.waitHandle);
+            this.cancellationTokenRegistration?.Unregister();
         }
 
         private void ProcessHandlers()
