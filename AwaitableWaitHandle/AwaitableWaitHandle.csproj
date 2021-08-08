@@ -6,4 +6,9 @@
     <AssemblyName>Zagidiziran.Concurrent.AwaitableWaitHandle</AssemblyName>
   </PropertyGroup>
 
+  <PropertyGroup>
+    <NuspecFile>Zagidziran.Concurrent.AwaitableWaitHandle.nuspec</NuspecFile>
+    <NuspecProperties>version=$(PackageVersion);configuration=$(Configuration)</NuspecProperties>
+  </PropertyGroup>
+
 </Project>
