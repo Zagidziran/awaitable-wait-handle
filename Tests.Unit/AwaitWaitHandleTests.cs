@@ -5,7 +5,7 @@
     using System.Threading.Tasks;
     using FluentAssertions;
     using Xunit;
-    using Zagidiziran.Concurrent.AwaitableWaitHandle;
+    using Zagidziran.Concurrent.AwaitableWaitHandle;
 
     public class AwaitWaitHandleTests
     {
