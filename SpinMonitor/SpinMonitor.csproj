@@ -1,0 +1,15 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Library</OutputType>
+    <TargetFramework>net5.0</TargetFramework>
+    <AssemblyName>Zagidziran.Concurrent.SpinMonitor</AssemblyName>
+    <RootNamespace>Zagidziran.Concurrent.SpinMonitor</RootNamespace>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <NuspecFile>Zagidziran.Concurrent.SpinMonitor.nuspec</NuspecFile>
+    <NuspecProperties>version=$(PackageVersion);configuration=$(Configuration)</NuspecProperties>
+  </PropertyGroup>
+
+</Project>

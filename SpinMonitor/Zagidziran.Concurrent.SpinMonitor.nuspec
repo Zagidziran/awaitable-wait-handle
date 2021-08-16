@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<package >
+  <metadata>
+    <id>Zagidziran.Concurrent.SpinMonitor</id>
+    <version>$version$</version>
+    <authors>Zagidziran</authors>
+    <owners>Zagidziran</owners>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>Tiny set of classes to lock on objects in monitor like style without await limitation.</description>
+    <releaseNotes></releaseNotes>
+    <copyright>Copyright 2021</copyright>
+    <tags>Monitor await</tags>
+    <dependencies>
+      <group targetFramework="net5.0">
+      </group>
+    </dependencies>
+  </metadata>
+  <files>
+    <file src="bin\$configuration$\net5.0\Zagidziran.Concurrent.SpinMonitor.dll" target="lib\net5.0\" />
+    <file src="bin\$configuration$\net5.0\Zagidziran.Concurrent.SpinMonitor.pdb" target="lib\net5.0\" />
+  </files>
+</package>

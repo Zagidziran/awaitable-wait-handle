@@ -46,7 +46,7 @@
             using var are = new AutoResetEvent(true);
             await are;
             are.WaitOne(0).Should().BeFalse();
-        }
+         }
 
         [Fact]
         public async Task ShouldThrowOperationCancelledException()
