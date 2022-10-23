@@ -1,4 +1,6 @@
-﻿namespace Tests.Unit
+﻿using System.Collections.Generic;
+
+namespace Tests.Unit
 {
     using System;
     using System.Threading;
@@ -9,6 +11,16 @@
 
     public class AwaitWaitHandleTests
     {
+        [Fact]
+        public async Task ShouldResetOnWait()
+        {
+            var are = new AutoResetEvent(true);
+            var wrapper = are.WithTimeout(TimeSpan.FromMilliseconds(10));
+            await wrapper;
+            Func<Task> action = async () => await wrapper;
+            await action.Should().ThrowAsync<TimeoutException>();
+        }
+
         [Fact]
         public async Task ShouldAwaitWaitHandle()
         {

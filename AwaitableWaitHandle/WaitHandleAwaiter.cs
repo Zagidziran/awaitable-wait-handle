@@ -113,7 +113,7 @@
         {
             this.isCompleted = true;
             Interlocked.CompareExchange(ref this.registeredWaitHandle, null, this.registeredWaitHandle)
-                ?.Unregister(this.waitHandle);
+                ?.Unregister(null);
             this.cancellationTokenRegistration?.Unregister();
         }
 
